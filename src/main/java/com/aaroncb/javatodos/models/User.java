@@ -94,29 +94,23 @@ public class User extends Auditable
         }
     }
 
-    public void setEmail(String email)
-    {
-        this.email = email.toLowerCase();
-    }
-
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public List<UserRoles> getUserroles()
-    {
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<UserRoles> getUserroles() {
         return userroles;
     }
 
-    public void setUserroles(List<UserRoles> userroles)
-    {
+    public void setUserroles(List<UserRoles> userroles) {
         this.userroles = userroles;
     }
-
 }
