@@ -83,7 +83,7 @@ public class User extends Auditable
         this.username = username.toLowerCase();
     }
 
-    public String getEemail()
+    public String getEmail()
     {
         if (email == null) // this is possible when updating a user
         {
@@ -94,7 +94,7 @@ public class User extends Auditable
         }
     }
 
-    public void setEmailmail(String email)
+    public void setEmail(String email)
     {
         this.email = email.toLowerCase();
     }

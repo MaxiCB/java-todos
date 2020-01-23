@@ -59,7 +59,7 @@ public class UserSerivceImpl implements UserService
         newUser.setUsername(user.getUsername()
                 .toLowerCase());
         newUser.setPassword(user.getPassword());
-        newUser.setPrimaryemail(user.getPrimaryemail()
+        newUser.setEmail(user.getEmail()
                 .toLowerCase());
 
         return userRepository.save(newUser);
@@ -84,9 +84,9 @@ public class UserSerivceImpl implements UserService
             currentUser.setPassword(user.getPassword());
         }
 
-        if (user.getPrimaryemail() != null)
+        if (user.getEmail() != null)
         {
-            currentUser.setPrimaryemail(user.getPrimaryemail()
+            currentUser.setEmail(user.getEmail()
                     .toLowerCase());
         }
 
