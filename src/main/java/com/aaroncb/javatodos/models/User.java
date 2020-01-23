@@ -33,17 +33,28 @@ public class User extends Auditable
     @Column(nullable = false,
             unique = true)
     @Email
-    private String primaryemail;
+    private String email;
+
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private List<UserRoles> userroles = new ArrayList<>();
 
     public User() { }
 
     public User(String username,
                 String password,
-                String primaryemail)
+                String email,
+                List<UserRoles> userRoles)
     {
         setUsername(username);
         setPassword(password);
-        this.primaryemail = primaryemail;
+        this.email = email;
+        for (UserRoles ur : userRoles)
+        {
+            ur.setUser(this);
+        }
+        this.userroles = userRoles;
     }
 
     public long getUserid()
@@ -72,20 +83,20 @@ public class User extends Auditable
         this.username = username.toLowerCase();
     }
 
-    public String getPrimaryemail()
+    public String getEemail()
     {
-        if (primaryemail == null) // this is possible when updating a user
+        if (email == null) // this is possible when updating a user
         {
             return null;
         } else
         {
-            return primaryemail.toLowerCase();
+            return email.toLowerCase();
         }
     }
 
-    public void setPrimaryemail(String primaryemail)
+    public void setEmailmail(String email)
     {
-        this.primaryemail = primaryemail.toLowerCase();
+        this.email = email.toLowerCase();
     }
 
     public String getPassword()
@@ -96,6 +107,16 @@ public class User extends Auditable
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public List<UserRoles> getUserroles()
+    {
+        return userroles;
+    }
+
+    public void setUserroles(List<UserRoles> userroles)
+    {
+        this.userroles = userroles;
     }
 
 }
