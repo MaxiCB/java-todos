@@ -1,6 +1,9 @@
 package com.aaroncb.javatodos.services;
 
+import com.aaroncb.javatodos.models.Role;
 import com.aaroncb.javatodos.models.User;
+import com.aaroncb.javatodos.models.UserRoles;
+import com.aaroncb.javatodos.repository.RoleRepository;
 import com.aaroncb.javatodos.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,8 @@ public class UserSerivceImpl implements UserService
     @Autowired
     UserRepository userRepository;
 
-//    Need to bring in Roles Repository when Implemented
+    @Autowired
+    RoleRepository roleRepository;
 
     @Override
     public List<User> findAll()
@@ -61,6 +65,18 @@ public class UserSerivceImpl implements UserService
         newUser.setPassword(user.getPassword());
         newUser.setEmail(user.getEmail()
                 .toLowerCase());
+
+        ArrayList<UserRoles> newRoles = new ArrayList<>();
+        for (UserRoles ur : user.getUserroles())
+        {
+            long id = ur.getRole()
+                    .getRoleid();
+            Role role = roleRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Role id " + id + " not found!"));
+            newRoles.add(new UserRoles(newUser,
+                    role));
+        }
+        newUser.setUserroles(newRoles);
 
         return userRepository.save(newUser);
     }
