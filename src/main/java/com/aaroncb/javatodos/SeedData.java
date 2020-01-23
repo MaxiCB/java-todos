@@ -1,6 +1,7 @@
 package com.aaroncb.javatodos;
 
 import com.aaroncb.javatodos.models.Role;
+import com.aaroncb.javatodos.models.Todo;
 import com.aaroncb.javatodos.models.User;
 import com.aaroncb.javatodos.models.UserRoles;
 import com.aaroncb.javatodos.services.RoleService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 @Transactional
@@ -42,6 +44,8 @@ public class SeedData implements CommandLineRunner
 
         User u1 = new User("Test User", "Test Password", "test@test.com", adminRoles);
 
+        u1.getUserTodos()
+                .add(new Todo(u1, "Example Todo!", new Date(), false));
         userService.save(u1);
 
     }

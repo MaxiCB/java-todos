@@ -1,6 +1,7 @@
 package com.aaroncb.javatodos.services;
 
 import com.aaroncb.javatodos.models.Role;
+import com.aaroncb.javatodos.models.Todo;
 import com.aaroncb.javatodos.models.User;
 import com.aaroncb.javatodos.models.UserRoles;
 import com.aaroncb.javatodos.repository.RoleRepository;
@@ -77,6 +78,15 @@ public class UserSerivceImpl implements UserService
                     role));
         }
         newUser.setUserroles(newRoles);
+
+        for (Todo ue : user.getUserTodos())
+        {
+            newUser.getUserTodos()
+                    .add(new Todo(newUser,
+                            ue.getDescription(),
+                            ue.getDatestarted(),
+                            ue.isCompleted()));
+        }
 
         return userRepository.save(newUser);
     }
