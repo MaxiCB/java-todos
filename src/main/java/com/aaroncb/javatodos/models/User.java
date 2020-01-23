@@ -12,6 +12,12 @@ import java.util.List;
 @Table(name="users")
 public class User extends Auditable
 {
+        /*
+        | UserID | Username | Password  | PrimaryEmail  | UserRoles | UserTodos |
+        |--------|----------|-----------|---------------|-----------|-----------|
+        | 1      | Aaron    | Password1 | test@test.com | Role      | Task      |
+        */
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
