@@ -46,7 +46,7 @@ public class UserController
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/id/{name}",
+    @GetMapping(value = "/users/{name}",
                 produces = {"application/json"})
     public ResponseEntity<?> findUserByName(@PathVariable String name)
     {
@@ -54,7 +54,7 @@ public class UserController
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/userid/{userId}",
+    @GetMapping(value = "/todos/{userId}",
                 produces = {"application/json"})
     public ResponseEntity<?> findUserTodos(@PathVariable Long userId)
     {
