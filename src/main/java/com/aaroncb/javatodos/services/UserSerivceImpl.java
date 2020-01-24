@@ -23,6 +23,9 @@ public class UserSerivceImpl implements UserService
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserAuditing userAuditing;
+
     @Override
     public List<User> findAll()
     {
@@ -68,6 +71,7 @@ public class UserSerivceImpl implements UserService
                 .toLowerCase());
 
         ArrayList<UserRoles> newRoles = new ArrayList<>();
+
         for (UserRoles ur : user.getUserroles())
         {
             long id = ur.getRole()
@@ -126,5 +130,50 @@ public class UserSerivceImpl implements UserService
         userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found!"));
         userRepository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserRole(long userid,
+                               long roleid)
+    {
+        userRepository.findById(userid)
+                .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
+        roleRepository.findById(roleid)
+                .orElseThrow(() -> new EntityNotFoundException("Role id " + roleid + " not found!"));
+
+        if (roleRepository.checkUserRolesCombo(userid,
+                roleid)
+                .getCount() > 0)
+        {
+            roleRepository.deleteUserRoles(userid,
+                    roleid);
+        } else
+        {
+            throw new EntityNotFoundException("Role and User Combination Does Not Exists");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void addUserRole(long userid,
+                            long roleid)
+    {
+        userRepository.findById(userid)
+                .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
+        roleRepository.findById(roleid)
+                .orElseThrow(() -> new EntityNotFoundException("Role id " + roleid + " not found!"));
+
+        if (roleRepository.checkUserRolesCombo(userid,
+                roleid)
+                .getCount() <= 0)
+        {
+            roleRepository.insertUserRoles(userAuditing.getCurrentAuditor().get(),
+                    userid,
+                    roleid);
+        } else
+        {
+            throw new EntityNotFoundException("Role and User Combination Already Exists");
+        }
     }
 }

@@ -42,10 +42,27 @@ public class SeedData implements CommandLineRunner
         adminRoles.add(new UserRoles(new User(), r2));
         adminRoles.add(new UserRoles(new User(), r3));
 
-        User u1 = new User("Test User", "Test Password", "test@test.com", adminRoles);
+        User u1 = new User("Test User", "Test Password", "test@test.com");
+        u1.setUserroles(adminRoles);
 
         u1.getUserTodos()
-                .add(new Todo(u1, "Example Todo!", new Date(), false));
+                .add(new Todo(u1, "Example Todo!",
+                        new Date(),
+                        false));
+
+        u1.getUserTodos()
+                .add(new Todo(u1, "Finish java-orders-swagger",
+                        new Date(),
+                        false));
+        u1.getUserTodos()
+                .add(new Todo(u1, "Feed the turtles",
+                        new Date(),
+                        false));
+        u1.getUserTodos()
+                .add(new Todo(u1, "Complete the sprint challenge",
+                        new Date(),
+                        false));
+
         userService.save(u1);
 
     }

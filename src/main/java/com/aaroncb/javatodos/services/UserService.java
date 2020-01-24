@@ -16,6 +16,12 @@ public interface UserService
 
     User update(User user, long id);
 
+    void deleteUserRole(long userid,
+                        long roleid);
+
+    void addUserRole(long userid,
+                     long roleid);
+
     void delete(long id);
 
 //    Need to add Deleting && Adding user roles && todos
