@@ -53,11 +53,6 @@ public class User extends Auditable
         setUsername(username);
         setPassword(password);
         this.email = email;
-//        for (UserRoles ur : userRoles)
-//        {
-//            ur.setUser(this);
-//        }
-//        this.userroles = userRoles;
     }
 
     public long getUserid()
