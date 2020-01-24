@@ -8,6 +8,7 @@ import com.aaroncb.javatodos.repository.TodoRepository;
 import com.aaroncb.javatodos.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -22,6 +23,13 @@ public class TodoServiceImpl implements TodoService
     UserService userService;
 
     @Override
+    public Todo findTodoById(long id) throws EntityNotFoundException {
+        return todoRepository.findById(id)
+                            .orElseThrow(() -> new EntityNotFoundException("Todo id " + id + " not found"));
+    }
+
+    @Transactional
+    @Override
     public Todo save(Todo todo, long userID) {
 
         User user = userService.findUserById(userID);
@@ -32,5 +40,30 @@ public class TodoServiceImpl implements TodoService
                 todo.isCompleted());
 
         return todoRepository.save(newTodo);
+    }
+
+    @Transactional
+    @Override
+    public Todo update(Todo todo,
+                       long todoId) {
+
+        Todo currTodo = findTodoById(todoId);
+
+        if(todo.getDescription() != null)
+        {
+            currTodo.setDescription(todo.getDescription()
+                                    .toLowerCase());
+        }
+
+        if(todo.isCompleted() != false)
+        {
+            currTodo.setCompleted(todo.isCompleted());
+        }
+
+        if(todo.getUser() != null)
+        {
+            currTodo.setUser(userService.findUserById(todo.getUser().getUserid()));
+        }
+        return todoRepository.save(currTodo);
     }
 }

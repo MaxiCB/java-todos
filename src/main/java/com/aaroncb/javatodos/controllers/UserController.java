@@ -133,4 +133,17 @@ public class UserController
 
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
+
+    @PutMapping(value = "/todo/{todoId}",
+            consumes = {"application/json"})
+    public ResponseEntity<?> updateUser(
+            @RequestBody
+                    Todo updateTodo,
+            @PathVariable
+                    Long todoId)
+    {
+        todoService.update(updateTodo,
+                todoId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
