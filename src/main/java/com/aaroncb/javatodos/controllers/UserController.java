@@ -1,9 +1,11 @@
 package com.aaroncb.javatodos.controllers;
 
+import com.aaroncb.javatodos.models.Role;
 import com.aaroncb.javatodos.models.Todo;
 import com.aaroncb.javatodos.models.User;
 import com.aaroncb.javatodos.repository.TodoRepository;
 import com.aaroncb.javatodos.repository.UserRepository;
+import com.aaroncb.javatodos.services.RoleService;
 import com.aaroncb.javatodos.services.TodoService;
 import com.aaroncb.javatodos.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +42,13 @@ public class UserController
     }
 
     @GetMapping(value = "/users/{userId}", produces = {"application/json"})
-    public ResponseEntity<?> findUserById(@PathVariable Long userId)
+    public ResponseEntity<?> findUserById(@PathVariable long userId)
     {
         User user = userService.findUserById(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/{name}",
+    @GetMapping(value = "/users/name/{name}",
                 produces = {"application/json"})
     public ResponseEntity<?> findUserByName(@PathVariable String name)
     {
@@ -77,7 +79,7 @@ public class UserController
                                                     .toUri();
         responseHeaders.setLocation(newUserURI);
 
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(newUser, responseHeaders, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/user/{id}",
@@ -124,9 +126,9 @@ public class UserController
     @PostMapping(value = "/user/{userid}/role/{roleid}")
     public ResponseEntity<?> postUserRoleByIds(
             @PathVariable
-                    Long userid,
+                    long userid,
             @PathVariable
-                    Long roleid)
+                    long roleid)
     {
         userService.addUserRole(userid,
                 roleid);
@@ -150,6 +152,6 @@ public class UserController
                 .toUri();
         responseHeaders.setLocation(newUserURI);
 
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(newTodo, responseHeaders, HttpStatus.CREATED);
     }
 }
