@@ -2,6 +2,7 @@ package com.aaroncb.javatodos.controllers;
 
 import com.aaroncb.javatodos.models.Todo;
 import com.aaroncb.javatodos.models.User;
+import com.aaroncb.javatodos.repository.TodoRepository;
 import com.aaroncb.javatodos.repository.UserRepository;
 import com.aaroncb.javatodos.services.TodoService;
 import com.aaroncb.javatodos.services.UserService;
@@ -28,6 +29,9 @@ public class UserController
     @Autowired
     TodoService todoService;
 
+    @Autowired
+    TodoRepository todoRepository;
+
     @GetMapping(value="/users", produces = {"application/json"})
     public ResponseEntity<?> listAllUsers()
     {
@@ -48,6 +52,14 @@ public class UserController
     {
         User user = userService.findByName(name);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/userid/{userId}",
+                produces = {"application/json"})
+    public ResponseEntity<?> findUserTodos(@PathVariable Long userId)
+    {
+        List<Todo> todos = todoRepository.findTodosByCompletedFalseOrderByDatestarted();
+        return new ResponseEntity<>(todos, HttpStatus.OK);
     }
 
     @PostMapping(value = "/user",

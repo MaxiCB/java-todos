@@ -6,6 +6,9 @@ import com.aaroncb.javatodos.models.User;
 import com.aaroncb.javatodos.models.UserRoles;
 import com.aaroncb.javatodos.services.RoleService;
 import com.aaroncb.javatodos.services.UserService;
+import com.github.javafaker.Faker;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 @Transactional
@@ -65,5 +69,32 @@ public class SeedData implements CommandLineRunner
 
         userService.save(u1);
 
+        ArrayList<UserRoles> users = new ArrayList<>();
+
+        FakeValuesService fakeValuesService = new FakeValuesService(new Locale("en-US"),
+                                                                    new RandomService());
+        Faker nameFaker = new Faker(new Locale("en-US"));
+
+        for (int i = 0; i < 100; i++)
+        {
+            new User();
+            User fakeUser;
+
+            users = new ArrayList<>();
+            users.add(new UserRoles(new User(), r2));
+
+            fakeUser = new User(nameFaker.name().username(),
+                                "password",
+                                nameFaker.internet().emailAddress());
+            fakeUser.setUserroles(users);
+            fakeUser.getUserTodos()
+                    .add(new Todo(fakeUser, nameFaker.elderScrolls().city(), new Date(), false));
+            fakeUser.getUserTodos()
+                    .add(new Todo(fakeUser, nameFaker.elderScrolls().creature(), new Date(), false));
+            fakeUser.getUserTodos()
+                    .add(new Todo(fakeUser, nameFaker.elderScrolls().dragon(), new Date(), false));
+
+            userService.save(fakeUser);
+        }
     }
 }
