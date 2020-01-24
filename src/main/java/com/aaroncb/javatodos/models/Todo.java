@@ -1,5 +1,6 @@
 package com.aaroncb.javatodos.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -23,7 +24,8 @@ public class Todo
 
     @ManyToOne
     @JoinColumn(name="userid", nullable = false)
-    @JsonIgnoreProperties("todos")
+    @JsonIgnoreProperties("user")
+    @JsonIgnore
     private User user;
 
     public Todo() {
