@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service(value = "todoService")
 public class TodoServiceImpl implements TodoService
@@ -21,6 +23,15 @@ public class TodoServiceImpl implements TodoService
 
     @Autowired
     UserService userService;
+
+    @Override
+    public List<Todo> findAll() {
+        List<Todo> todos = new ArrayList<>();
+        todoRepository.findAll()
+                        .iterator()
+                        .forEachRemaining(todos::add);
+        return todos;
+    }
 
     @Override
     public Todo findTodoById(long id) throws EntityNotFoundException {

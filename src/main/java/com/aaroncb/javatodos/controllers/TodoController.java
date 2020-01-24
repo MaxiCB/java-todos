@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/todos")
 public class TodoController
@@ -15,6 +17,13 @@ public class TodoController
     @Autowired
     TodoService todoService;
 
+    @GetMapping(value ="/todos",
+                produces = {"application/json"})
+    public ResponseEntity<?> findAll()
+    {
+        List<Todo> todoList =  todoService.findAll();
+        return new ResponseEntity<>(todoList, HttpStatus.OK);
+    }
     @PutMapping(value = "/todo/{todoId}",
             consumes = {"application/json"})
     public ResponseEntity<?> updateTodo(
