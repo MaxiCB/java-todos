@@ -66,4 +66,13 @@ public class TodoServiceImpl implements TodoService
         }
         return todoRepository.save(currTodo);
     }
+
+    @Transactional
+    @Override
+    public void delete(long id)
+    {
+        todoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Todo " + id + " not found"));
+        todoRepository.deleteById(id);
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -85,6 +86,12 @@ public class UserController
             @PathVariable
                     Long id)
     {
+        User user = userService.findUserById(id);
+
+        for(Todo td : user.getUserTodos()){
+            todoService.delete(td.getTodoid());
+        }
+
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -132,18 +139,5 @@ public class UserController
         responseHeaders.setLocation(newUserURI);
 
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
-    }
-
-    @PutMapping(value = "/todo/{todoId}",
-            consumes = {"application/json"})
-    public ResponseEntity<?> updateUser(
-            @RequestBody
-                    Todo updateTodo,
-            @PathVariable
-                    Long todoId)
-    {
-        todoService.update(updateTodo,
-                todoId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
