@@ -1,11 +1,16 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.controllers;
 
-import com.aaroncb.javatodos.models.Role;
 import com.aaroncb.javatodos.models.Todo;
 import com.aaroncb.javatodos.models.User;
 import com.aaroncb.javatodos.repository.TodoRepository;
-import com.aaroncb.javatodos.repository.UserRepository;
-import com.aaroncb.javatodos.services.RoleService;
 import com.aaroncb.javatodos.services.TodoService;
 import com.aaroncb.javatodos.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +23,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,49 +38,44 @@ public class UserController
     @Autowired
     TodoRepository todoRepository;
 
-    @GetMapping(value="/users", produces = {"application/json"})
-    public ResponseEntity<?> listAllUsers()
-    {
+    @GetMapping(value = "/users", produces = {"application/json"})
+    public ResponseEntity<?> listAllUsers() {
         List<User> myUsers = userService.findAll();
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
     @GetMapping(value = "/users/{userId}", produces = {"application/json"})
-    public ResponseEntity<?> findUserById(@PathVariable long userId)
-    {
+    public ResponseEntity<?> findUserById(@PathVariable long userId) {
         User user = userService.findUserById(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping(value = "/users/name/{name}",
-                produces = {"application/json"})
-    public ResponseEntity<?> findUserByName(@PathVariable String name)
-    {
+            produces = {"application/json"})
+    public ResponseEntity<?> findUserByName(@PathVariable String name) {
         User user = userService.findByName(name);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping(value = "/todos/{userId}",
-                produces = {"application/json"})
-    public ResponseEntity<?> findUserTodos(@PathVariable Long userId)
-    {
+            produces = {"application/json"})
+    public ResponseEntity<?> findUserTodos(@PathVariable Long userId) {
         List<Todo> todos = todoRepository.findTodosByCompletedFalseOrderByDatestarted();
         return new ResponseEntity<>(todos, HttpStatus.OK);
     }
 
     @PostMapping(value = "/user",
-                consumes = {"application/json"})
+            consumes = {"application/json"})
     public ResponseEntity<?> addNewUser(@Valid
                                         @RequestBody
-                                            User newUser) throws URISyntaxException
-    {
+                                                User newUser) throws URISyntaxException {
         newUser = userService.save(newUser);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newUserURI = ServletUriComponentsBuilder.fromCurrentRequest()
-                                                    .path("/{userid}")
-                                                    .buildAndExpand(newUser.getUserid())
-                                                    .toUri();
+                .path("/{userid}")
+                .buildAndExpand(newUser.getUserid())
+                .toUri();
         responseHeaders.setLocation(newUserURI);
 
         return new ResponseEntity<>(newUser, responseHeaders, HttpStatus.CREATED);
@@ -88,8 +87,7 @@ public class UserController
             @RequestBody
                     User updateUser,
             @PathVariable
-                    Long id)
-    {
+                    Long id) {
         userService.update(updateUser,
                 id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -98,11 +96,10 @@ public class UserController
     @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<?> deleteUserById(
             @PathVariable
-                    Long id)
-    {
+                    Long id) {
         User user = userService.findUserById(id);
 
-        for(Todo td : user.getUserTodos()){
+        for (Todo td : user.getUserTodos()) {
             todoService.delete(td.getTodoid());
         }
 
@@ -115,8 +112,7 @@ public class UserController
             @PathVariable
                     Long userid,
             @PathVariable
-                    Long roleid)
-    {
+                    Long roleid) {
         userService.deleteUserRole(userid,
                 roleid);
 
@@ -128,8 +124,7 @@ public class UserController
             @PathVariable
                     long userid,
             @PathVariable
-                    long roleid)
-    {
+                    long roleid) {
         userService.addUserRole(userid,
                 roleid);
 
@@ -139,10 +134,9 @@ public class UserController
 
     @PostMapping(value = "/todo/{userID}")
     public ResponseEntity<?> addUserTodo(@RequestBody
-                                        Todo newTodo,
-                                        @PathVariable
-                                        Long userID) throws URISyntaxException
-    {
+                                                 Todo newTodo,
+                                         @PathVariable
+                                                 Long userID) throws URISyntaxException {
         newTodo = todoService.save(newTodo, userID);
 
         HttpHeaders responseHeaders = new HttpHeaders();

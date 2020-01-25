@@ -1,3 +1,11 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -48,46 +56,38 @@ public class User extends Auditable
 
     public User(String username,
                 String password,
-                String email)
-    {
+                String email) {
         setUsername(username);
         setPassword(password);
         this.email = email;
     }
 
-    public long getUserid()
-    {
+    public long getUserid() {
         return userid;
     }
 
-    public void setUserid(long userid)
-    {
+    public void setUserid(long userid) {
         this.userid = userid;
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         if (username == null) // this is possible when updating a user
         {
             return null;
-        } else
-        {
+        } else {
             return username.toLowerCase();
         }
     }
 
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username.toLowerCase();
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         if (email == null) // this is possible when updating a user
         {
             return null;
-        } else
-        {
+        } else {
             return email.toLowerCase();
         }
     }

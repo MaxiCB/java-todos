@@ -1,11 +1,16 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.services;
 
-import com.aaroncb.javatodos.models.Role;
 import com.aaroncb.javatodos.models.Todo;
 import com.aaroncb.javatodos.models.User;
-import com.aaroncb.javatodos.models.UserRoles;
 import com.aaroncb.javatodos.repository.TodoRepository;
-import com.aaroncb.javatodos.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +33,15 @@ public class TodoServiceImpl implements TodoService
     public List<Todo> findAll() {
         List<Todo> todos = new ArrayList<>();
         todoRepository.findAll()
-                        .iterator()
-                        .forEachRemaining(todos::add);
+                .iterator()
+                .forEachRemaining(todos::add);
         return todos;
     }
 
     @Override
     public Todo findTodoById(long id) throws EntityNotFoundException {
         return todoRepository.findById(id)
-                            .orElseThrow(() -> new EntityNotFoundException("Todo id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Todo id " + id + " not found"));
     }
 
     @Transactional
@@ -60,19 +65,16 @@ public class TodoServiceImpl implements TodoService
 
         Todo currTodo = findTodoById(todoId);
 
-        if(todo.getDescription() != null)
-        {
+        if (todo.getDescription() != null) {
             currTodo.setDescription(todo.getDescription()
-                                    .toLowerCase());
+                    .toLowerCase());
         }
 
-        if(todo.isCompleted() != false)
-        {
+        if (todo.isCompleted()) {
             currTodo.setCompleted(todo.isCompleted());
         }
 
-        if(todo.getUser() != null)
-        {
+        if (todo.getUser() != null) {
             currTodo.setUser(userService.findUserById(todo.getUser().getUserid()));
         }
         return todoRepository.save(currTodo);
@@ -80,8 +82,7 @@ public class TodoServiceImpl implements TodoService
 
     @Transactional
     @Override
-    public void delete(long id)
-    {
+    public void delete(long id) {
         todoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Todo " + id + " not found"));
         todoRepository.deleteById(id);

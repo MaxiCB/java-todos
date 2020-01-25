@@ -1,3 +1,11 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,8 +34,7 @@ public class UserRoles extends Auditable implements Serializable
     public UserRoles() {}
 
     public UserRoles(User user,
-                     Role role)
-    {
+                     Role role) {
         this.user = user;
         this.role = role;
     }
@@ -49,14 +56,11 @@ public class UserRoles extends Auditable implements Serializable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof UserRoles))
-        {
+        if (!(o instanceof UserRoles)) {
             return false;
         }
         UserRoles userRoles = (UserRoles) o;
@@ -64,15 +68,13 @@ public class UserRoles extends Auditable implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(getUser(),
                 getRole());
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "UserRoles{" + "user=" + user.getUserid() + ", role=" + role.getRoleid() + '}';
     }
 }

@@ -1,3 +1,11 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.models;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -9,7 +17,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.util.Date;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
