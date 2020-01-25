@@ -1,3 +1,11 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.services;
 
 import org.springframework.data.domain.AuditorAware;
@@ -9,8 +17,7 @@ import java.util.Optional;
 public class UserAuditing implements AuditorAware<String>
 {
     @Override
-    public Optional<String> getCurrentAuditor()
-    {
+    public Optional<String> getCurrentAuditor() {
         String uname;
 
         uname = "SYSTEM";

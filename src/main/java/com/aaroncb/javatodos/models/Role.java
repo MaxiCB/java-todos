@@ -1,6 +1,14 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,7 +27,7 @@ public class Role extends Auditable
 
     @OneToMany(mappedBy = "role",
             cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("role")
+    @JsonIgnore
     private List<UserRoles> userroles = new ArrayList<>();
 
     public Role(){}
@@ -46,13 +54,24 @@ public class Role extends Auditable
         this.name = name.toUpperCase();
     }
 
-    public List<UserRoles> getUserroles()
-    {
+    public List<UserRoles> getUserroles() {
         return userroles;
     }
 
-    public void setUserroles(List<UserRoles> userroles)
-    {
+    public void setUserroles(List<UserRoles> userroles) {
         this.userroles = userroles;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleid=" + roleid +
+                ", name='" + name + '\'' +
+                ", userroles=" + userroles +
+                ", createdby='" + createdby + '\'' +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy='" + lastModifiedBy + '\'' +
+                ", lastModifiedData=" + lastModifiedData +
+                '}';
     }
 }

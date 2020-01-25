@@ -1,3 +1,11 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.services;
 
 import com.aaroncb.javatodos.models.Role;
@@ -27,8 +35,7 @@ public class UserSerivceImpl implements UserService
     UserAuditing userAuditing;
 
     @Override
-    public List<User> findAll()
-    {
+    public List<User> findAll() {
         List<User> list = new ArrayList<>();
         userRepository.findAll()
                 .iterator()
@@ -36,18 +43,15 @@ public class UserSerivceImpl implements UserService
         return list;
     }
 
-    public User findUserById(long id) throws EntityNotFoundException
-    {
+    public User findUserById(long id) throws EntityNotFoundException {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found!"));
     }
 
     @Override
-    public User findByName(String name)
-    {
+    public User findByName(String name) {
         User uu = userRepository.findByUsername(name.toLowerCase());
-        if (uu == null)
-        {
+        if (uu == null) {
             throw new EntityNotFoundException("User name " + name + " not found!");
         }
         return uu;
@@ -55,11 +59,9 @@ public class UserSerivceImpl implements UserService
 
     @Transactional
     @Override
-    public User save(User user)
-    {
+    public User save(User user) {
         if (userRepository.findByUsername(user.getUsername()
-                .toLowerCase()) != null)
-        {
+                .toLowerCase()) != null) {
             throw new EntityNotFoundException(user.getUsername() + " is already taken!");
         }
 
@@ -72,8 +74,7 @@ public class UserSerivceImpl implements UserService
 
         ArrayList<UserRoles> newRoles = new ArrayList<>();
 
-        for (UserRoles ur : user.getUserroles())
-        {
+        for (UserRoles ur : user.getUserroles()) {
             long id = ur.getRole()
                     .getRoleid();
             Role role = roleRepository.findById(id)
@@ -83,8 +84,7 @@ public class UserSerivceImpl implements UserService
         }
         newUser.setUserroles(newRoles);
 
-        for (Todo ue : user.getUserTodos())
-        {
+        for (Todo ue : user.getUserTodos()) {
             newUser.getUserTodos()
                     .add(new Todo(newUser,
                             ue.getDescription(),
@@ -98,24 +98,20 @@ public class UserSerivceImpl implements UserService
     @Transactional
     @Override
     public User update(User user,
-                       long id)
-    {
+                       long id) {
 
         User currentUser = findUserById(id);
 
-        if (user.getUsername() != null)
-        {
+        if (user.getUsername() != null) {
             currentUser.setUsername(user.getUsername()
                     .toLowerCase());
         }
 
-        if (user.getPassword() != null)
-        {
+        if (user.getPassword() != null) {
             currentUser.setPassword(user.getPassword());
         }
 
-        if (user.getEmail() != null)
-        {
+        if (user.getEmail() != null) {
             currentUser.setEmail(user.getEmail()
                     .toLowerCase());
         }
@@ -125,8 +121,7 @@ public class UserSerivceImpl implements UserService
 
     @Transactional
     @Override
-    public void delete(long id)
-    {
+    public void delete(long id) {
         userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found!"));
         userRepository.deleteById(id);
@@ -135,8 +130,7 @@ public class UserSerivceImpl implements UserService
     @Transactional
     @Override
     public void deleteUserRole(long userid,
-                               long roleid)
-    {
+                               long roleid) {
         userRepository.findById(userid)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
         roleRepository.findById(roleid)
@@ -144,12 +138,10 @@ public class UserSerivceImpl implements UserService
 
         if (roleRepository.checkUserRolesCombo(userid,
                 roleid)
-                .getCount() > 0)
-        {
+                .getCount() > 0) {
             roleRepository.deleteUserRoles(userid,
                     roleid);
-        } else
-        {
+        } else {
             throw new EntityNotFoundException("Role and User Combination Does Not Exists");
         }
     }
@@ -157,8 +149,7 @@ public class UserSerivceImpl implements UserService
     @Transactional
     @Override
     public void addUserRole(long userid,
-                            long roleid)
-    {
+                            long roleid) {
         userRepository.findById(userid)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
         roleRepository.findById(roleid)
@@ -166,13 +157,11 @@ public class UserSerivceImpl implements UserService
 
         if (roleRepository.checkUserRolesCombo(userid,
                 roleid)
-                .getCount() <= 0)
-        {
+                .getCount() <= 0) {
             roleRepository.insertUserRoles(userAuditing.getCurrentAuditor().get(),
                     userid,
                     roleid);
-        } else
-        {
+        } else {
             throw new EntityNotFoundException("Role and User Combination Already Exists");
         }
     }

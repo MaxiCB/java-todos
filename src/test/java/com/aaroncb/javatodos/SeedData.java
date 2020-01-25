@@ -28,8 +28,7 @@ import java.util.Locale;
 
 @Transactional
 @Component
-public class SeedData implements CommandLineRunner
-{
+public class SeedData implements CommandLineRunner {
     @Autowired
     UserService userService;
 

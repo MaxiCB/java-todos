@@ -1,3 +1,11 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.services;
 
 import com.aaroncb.javatodos.models.Role;
@@ -9,12 +17,15 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value="roleService")
-public class RoleServiceImpl implements RoleService
-{
+@Service(value = "roleService")
+public class RoleServiceImpl implements RoleService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    UserAuditing userAuditing;
+
     @Override
     public List<Role> findAll() {
         List<Role> list = new ArrayList<>();
@@ -34,11 +45,9 @@ public class RoleServiceImpl implements RoleService
     public Role findByName(String name) {
         Role rr = roleRepository.findByNameIgnoreCase(name);
 
-        if (rr != null)
-        {
+        if (rr != null) {
             return rr;
-        } else
-        {
+        } else {
             throw new EntityNotFoundException(name);
         }
     }
@@ -48,8 +57,7 @@ public class RoleServiceImpl implements RoleService
         Role newRole = new Role();
         newRole.setName(role.getName());
         if (role.getUserroles()
-                .size() > 0)
-        {
+                .size() > 0) {
             throw new EntityNotFoundException("User Roles are not updated through Role. See endpoint POST: users/user/{userid}/role/{roleid}");
         }
 
@@ -58,22 +66,20 @@ public class RoleServiceImpl implements RoleService
 
     @Override
     public Role update(Role role, long id) {
-        if (role.getName() == null)
-        {
+        if (role.getName() == null) {
             throw new EntityNotFoundException("No role name found to update!");
         }
 
         if (role.getUserroles()
-                .size() > 0)
-        {
+                .size() > 0) {
             throw new EntityNotFoundException("User Roles are not updated through Role. See endpoint POST: users/user/{userid}/role/{roleid}");
         }
 
-        Role newRole = findRoleById(id); // see if id exists
+        Role newRole = findRoleById(id);
 
-//        roleRepository.updateRoleName(userAuditing.getCurrentAuditor().get(),
-//                id,
-//                role.getName());
+        roleRepository.updateRoleName(userAuditing.getCurrentAuditor().get(),
+                id,
+                role.getName());
         return findRoleById(id);
     }
 

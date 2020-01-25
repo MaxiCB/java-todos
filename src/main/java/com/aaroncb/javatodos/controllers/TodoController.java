@@ -1,3 +1,11 @@
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
 package com.aaroncb.javatodos.controllers;
 
 import com.aaroncb.javatodos.models.Todo;
@@ -17,21 +25,20 @@ public class TodoController
     @Autowired
     TodoService todoService;
 
-    @GetMapping(value ="/todos",
-                produces = {"application/json"})
-    public ResponseEntity<?> findAll()
-    {
-        List<Todo> todoList =  todoService.findAll();
+    @GetMapping(value = "/todos",
+            produces = {"application/json"})
+    public ResponseEntity<?> findAll() {
+        List<Todo> todoList = todoService.findAll();
         return new ResponseEntity<>(todoList, HttpStatus.OK);
     }
+
     @PutMapping(value = "/todo/{todoId}",
             consumes = {"application/json"})
     public ResponseEntity<?> updateTodo(
             @RequestBody
                     Todo updateTodo,
             @PathVariable
-                    Long todoId)
-    {
+                    Long todoId) {
         todoService.update(updateTodo,
                 todoId);
 
@@ -40,11 +47,10 @@ public class TodoController
         return new ResponseEntity<>(todo, HttpStatus.OK);
     }
 
-    @DeleteMapping(value="/{todoId}")
+    @DeleteMapping(value = "/{todoId}")
     public ResponseEntity<?> deleteTodo(
             @PathVariable Long todoId
-    )
-    {
+    ) {
         todoService.delete(todoId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
