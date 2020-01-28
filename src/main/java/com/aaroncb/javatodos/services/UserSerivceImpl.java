@@ -31,9 +31,6 @@ public class UserSerivceImpl implements UserService
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    UserAuditing userAuditing;
-
     @Override
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
@@ -119,9 +116,6 @@ public class UserSerivceImpl implements UserService
 
         if (user.getUserroles().size() > 0)
         {
-            // with so many relationships happening, I decided to go
-            // with old school queries
-            // delete the old ones
             roleRepository.deleteUserRoles(currentUser.getUserid());
 
             // add the new ones

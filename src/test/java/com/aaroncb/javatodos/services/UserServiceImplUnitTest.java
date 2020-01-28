@@ -111,9 +111,9 @@ public class UserServiceImplUnitTest
     {
         User user = new User("asdfasdfasd", "asdfasdfasdf", "asdfasdf@test.com");
 
-        User updateRestaurant = userService.update(user, 13);
+        User updateUser = userService.update(user, 13);
 
-        assertEquals(user.getUsername(), updateRestaurant.getUsername());
+        assertEquals(user.getUsername(), updateUser.getUsername());
     }
 
     @Transactional
