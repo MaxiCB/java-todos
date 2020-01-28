@@ -43,6 +43,7 @@ public class UserSerivceImpl implements UserService
         return list;
     }
 
+    @Override
     public User findUserById(long id) throws EntityNotFoundException {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found!"));
@@ -50,11 +51,11 @@ public class UserSerivceImpl implements UserService
 
     @Override
     public User findByName(String name) {
-        User uu = userRepository.findByUsername(name.toLowerCase());
-        if (uu == null) {
+        User u = userRepository.findByUsername(name.toLowerCase());
+        if (u == null) {
             throw new EntityNotFoundException("User name " + name + " not found!");
         }
-        return uu;
+        return u;
     }
 
     @Transactional

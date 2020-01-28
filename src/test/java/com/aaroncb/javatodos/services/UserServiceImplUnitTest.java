@@ -30,6 +30,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,19 +60,45 @@ public class UserServiceImplUnitTest
     {
     }
 
-    @Transactional
     @Test
     public void findAllUsers() throws Exception
     {
         List<User> userList =  userService.findAll();
 
         assertEquals(101, userList.size());
-
-        for (User u : userList)
-        {
-            // System.out.println(r);
-            System.out.println(mapper.writeValueAsString(u));
-        }
     }
 
+    @Test
+    public void findUserById() throws Exception
+    {
+        assertEquals("test user", userService.findUserById(4).getUsername());
+    }
+
+    @Test (expected = EntityNotFoundException.class)
+    public void findByUserIdThrow()
+    {
+        User errorUser = userService.findUserById(9999);
+    }
+
+    @Test
+    public void findByUsername()
+    {
+        assertEquals("test user", userService.findByName("test user").getUsername());
+    }
+
+    @Test (expected = EntityNotFoundException.class)
+    public void findByUsernameThrow()
+    {
+        assertEquals("test user", userService.findByName(""));
+    }
+
+    @Test
+    public void updateUser()
+    {
+        User user = new User("asdfasdfasd", "asdfasdfasdf", "asdfasdf@test.com");
+
+        User updateRestaurant = userService.update(user, 13);
+
+        assertEquals(user.getUsername(), updateRestaurant.getUsername());
+    }
 }

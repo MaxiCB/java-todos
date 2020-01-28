@@ -59,7 +59,6 @@ public class RoleServiceImplTest
 
         for (Role r : roleList)
         {
-            // System.out.println(r);
             System.out.println(mapper.writeValueAsString(r));
         }
     }
