@@ -160,7 +160,7 @@ public class UserSerivceImpl implements UserService
         if (roleRepository.checkUserRolesCombo(userid,
                 roleid)
                 .getCount() <= 0) {
-            roleRepository.insertUserRoles(userAuditing.getCurrentAuditor().get(),
+            roleRepository.insertUserRoles("SYSTEM",
                     userid,
                     roleid);
         } else {

@@ -105,6 +105,7 @@ public class UserServiceImplUnitTest
         assertEquals("test user", userService.findByName(""));
     }
 
+    @Transactional
     @Test
     public void updateUser()
     {
@@ -115,34 +116,14 @@ public class UserServiceImplUnitTest
         assertEquals(user.getUsername(), updateRestaurant.getUsername());
     }
 
-    @Test
     @Transactional
-    public void deleteUserRole()
+    @Test (expected = EntityNotFoundException.class)
+    public void deleteUser()
     {
-        User currUser = userService.findUserById(13);
+        User user = new User("delete", "delete", "delete@delete.com");
 
-        List<UserRoles> roles =  currUser.getUserroles();
-        for(UserRoles ur : roles)
-        {
-            long id = ur.getRole().getRoleid();
-            currUser = userService.deleteUserRole(13, id);
-        }
+        userService.delete(user.getUserid());
 
-        assertEquals(0, currUser.getUserroles().size());
-    }
-
-    @Test
-    @Transactional
-    public void addUserRole()
-    {
-        Role newRole = roleService.findRoleById(3);
-
-        ArrayList<UserRoles> users = new ArrayList<>();
-
-        users.add(new UserRoles(new User(), newRole));
-
-        userService.findUserById(13).setUserroles(users);
-
-        assertEquals(1, userService.findUserById(13).getUserroles().size());
+        assertEquals("deleted", userService.findByName("delete").getUsername());
     }
 }
