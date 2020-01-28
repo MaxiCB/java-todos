@@ -17,7 +17,9 @@
 package com.aaroncb.javatodos.services;
 
 import com.aaroncb.javatodos.JavaTodosApplicationTests;
+import com.aaroncb.javatodos.models.Role;
 import com.aaroncb.javatodos.models.User;
+import com.aaroncb.javatodos.models.UserRoles;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.After;
@@ -46,6 +48,9 @@ public class UserServiceImplUnitTest
     private UserService userService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private ObjectMapper mapper;
 
     @Before
@@ -58,6 +63,14 @@ public class UserServiceImplUnitTest
     @After
     public void tearDown() throws Exception
     {
+    }
+
+    @Test (expected = EntityNotFoundException.class)
+    public void saveUserThrow() throws Exception
+    {
+        User u1 = new User("Test User", "Test Password", "test@test.com");
+
+        userService.save(u1);
     }
 
     @Test
@@ -100,5 +113,36 @@ public class UserServiceImplUnitTest
         User updateRestaurant = userService.update(user, 13);
 
         assertEquals(user.getUsername(), updateRestaurant.getUsername());
+    }
+
+    @Test
+    @Transactional
+    public void deleteUserRole()
+    {
+        User currUser = userService.findUserById(13);
+
+        List<UserRoles> roles =  currUser.getUserroles();
+        for(UserRoles ur : roles)
+        {
+            long id = ur.getRole().getRoleid();
+            currUser = userService.deleteUserRole(13, id);
+        }
+
+        assertEquals(0, currUser.getUserroles().size());
+    }
+
+    @Test
+    @Transactional
+    public void addUserRole()
+    {
+        Role newRole = roleService.findRoleById(3);
+
+        ArrayList<UserRoles> users = new ArrayList<>();
+
+        users.add(new UserRoles(new User(), newRole));
+
+        userService.findUserById(13).setUserroles(users);
+
+        assertEquals(1, userService.findUserById(13).getUserroles().size());
     }
 }

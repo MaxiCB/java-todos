@@ -130,7 +130,7 @@ public class UserSerivceImpl implements UserService
 
     @Transactional
     @Override
-    public void deleteUserRole(long userid,
+    public User deleteUserRole(long userid,
                                long roleid) {
         userRepository.findById(userid)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
@@ -145,6 +145,7 @@ public class UserSerivceImpl implements UserService
         } else {
             throw new EntityNotFoundException("Role and User Combination Does Not Exists");
         }
+        return null;
     }
 
     @Transactional

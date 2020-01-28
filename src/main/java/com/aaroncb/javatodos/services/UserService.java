@@ -23,7 +23,7 @@ public interface UserService {
 
     User update(User user, long id);
 
-    void deleteUserRole(long userid,
+    User deleteUserRole(long userid,
                         long roleid);
 
     void addUserRole(long userid,
