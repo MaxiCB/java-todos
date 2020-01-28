@@ -6,11 +6,18 @@
  * AaronCB - Created: 2020.
  */
 
-package com.aaroncb.javatodos.service;
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
+package com.aaroncb.javatodos.services;
 
 import com.aaroncb.javatodos.JavaTodosApplicationTests;
-import com.aaroncb.javatodos.models.Role;
-import com.aaroncb.javatodos.services.RoleService;
+import com.aaroncb.javatodos.models.Todo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.After;
@@ -29,11 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JavaTodosApplicationTests.class)
-
-public class RoleServiceImplUnitTest
+public class TodoServiceImplUnitTest
 {
     @Autowired
-    private RoleService roleService;
+    private TodoService todoService;
 
     @Autowired
     private ObjectMapper mapper;
@@ -52,16 +58,16 @@ public class RoleServiceImplUnitTest
 
     @Transactional
     @Test
-    public void findAllRoles() throws Exception
+    public void findAllTodos() throws Exception
     {
-        List<Role> roleList =  roleService.findAll();
+        List<Todo> todoList =  todoService.findAll();
 
-        assertEquals(3, roleList.size());
+        assertEquals(304, todoList.size());
 
-        for (Role r : roleList)
+        for (Todo t : todoList)
         {
             // System.out.println(r);
-            System.out.println(mapper.writeValueAsString(r));
+            System.out.println(mapper.writeValueAsString(t));
         }
     }
 }

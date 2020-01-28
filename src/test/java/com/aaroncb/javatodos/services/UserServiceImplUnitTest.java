@@ -6,11 +6,18 @@
  * AaronCB - Created: 2020.
  */
 
-package com.aaroncb.javatodos.service;
+/*
+ * AaronCB - Created: 2020.
+ */
+
+/*
+ * AaronCB - Created: 2020.
+ */
+
+package com.aaroncb.javatodos.services;
 
 import com.aaroncb.javatodos.JavaTodosApplicationTests;
-import com.aaroncb.javatodos.models.Todo;
-import com.aaroncb.javatodos.services.TodoService;
+import com.aaroncb.javatodos.models.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.After;
@@ -29,10 +36,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JavaTodosApplicationTests.class)
-public class TodoServiceImplUnitTest
+public class UserServiceImplUnitTest
 {
+
     @Autowired
-    private TodoService todoService;
+    private UserService userService;
 
     @Autowired
     private ObjectMapper mapper;
@@ -51,16 +59,17 @@ public class TodoServiceImplUnitTest
 
     @Transactional
     @Test
-    public void findAllTodos() throws Exception
+    public void findAllUsers() throws Exception
     {
-        List<Todo> todoList =  todoService.findAll();
+        List<User> userList =  userService.findAll();
 
-        assertEquals(304, todoList.size());
+        assertEquals(101, userList.size());
 
-        for (Todo t : todoList)
+        for (User u : userList)
         {
             // System.out.println(r);
-            System.out.println(mapper.writeValueAsString(t));
+            System.out.println(mapper.writeValueAsString(u));
         }
     }
+
 }
