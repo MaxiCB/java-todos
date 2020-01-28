@@ -118,12 +118,19 @@ public class UserServiceImplUnitTest
 
     @Transactional
     @Test (expected = EntityNotFoundException.class)
+    public void deleteUserThrow()
+    {
+        userService.delete(9999);
+
+        assertEquals(100, userService.findAll().size());
+    }
+
+    @Transactional
+    @Test
     public void deleteUser()
     {
-        User user = new User("delete", "delete", "delete@delete.com");
+        userService.delete(4);
 
-        userService.delete(user.getUserid());
-
-        assertEquals("deleted", userService.findByName("delete").getUsername());
+        assertEquals(100, userService.findAll().size());
     }
 }
