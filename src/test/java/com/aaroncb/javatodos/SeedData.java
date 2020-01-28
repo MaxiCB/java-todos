@@ -87,9 +87,8 @@ public class SeedData implements CommandLineRunner {
             users = new ArrayList<>();
             users.add(new UserRoles(new User(), r2));
 
-            fakeUser = new User(nameFaker.name().username(),
-                    "password",
-                    nameFaker.internet().emailAddress());
+            fakeUser = new User(i + " ",
+                    "password",i + "@email.com");
             fakeUser.setUserroles(users);
             fakeUser.getUserTodos()
                     .add(new Todo(fakeUser, nameFaker.elderScrolls().city(), new Date(), false));

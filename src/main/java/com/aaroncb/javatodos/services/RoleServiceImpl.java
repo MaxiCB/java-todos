@@ -23,8 +23,6 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    UserAuditing userAuditing;
 
     @Override
     public List<Role> findAll() {
@@ -75,11 +73,8 @@ public class RoleServiceImpl implements RoleService {
             throw new EntityNotFoundException("User Roles are not updated through Role. See endpoint POST: users/user/{userid}/role/{roleid}");
         }
 
-        Role newRole = findRoleById(id);
+        roleRepository.updateRoleName(id, role.getName());
 
-        roleRepository.updateRoleName(userAuditing.getCurrentAuditor().get(),
-                id,
-                role.getName());
         return findRoleById(id);
     }
 

@@ -31,9 +31,6 @@ public class UserSerivceImpl implements UserService
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    UserAuditing userAuditing;
-
     @Override
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
@@ -43,6 +40,7 @@ public class UserSerivceImpl implements UserService
         return list;
     }
 
+    @Override
     public User findUserById(long id) throws EntityNotFoundException {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found!"));
@@ -50,11 +48,11 @@ public class UserSerivceImpl implements UserService
 
     @Override
     public User findByName(String name) {
-        User uu = userRepository.findByUsername(name.toLowerCase());
-        if (uu == null) {
+        User u = userRepository.findByUsername(name.toLowerCase());
+        if (u == null) {
             throw new EntityNotFoundException("User name " + name + " not found!");
         }
-        return uu;
+        return u;
     }
 
     @Transactional
@@ -116,6 +114,17 @@ public class UserSerivceImpl implements UserService
                     .toLowerCase());
         }
 
+        if (user.getUserroles().size() > 0)
+        {
+            roleRepository.deleteUserRoles(currentUser.getUserid());
+
+            // add the new ones
+            for (UserRoles ur : user.getUserroles())
+            {
+                roleRepository.insertUserRoles(id, ur.getRole().getRoleid());
+            }
+        }
+
         return userRepository.save(currentUser);
     }
 
@@ -125,44 +134,5 @@ public class UserSerivceImpl implements UserService
         userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found!"));
         userRepository.deleteById(id);
-    }
-
-    @Transactional
-    @Override
-    public void deleteUserRole(long userid,
-                               long roleid) {
-        userRepository.findById(userid)
-                .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
-        roleRepository.findById(roleid)
-                .orElseThrow(() -> new EntityNotFoundException("Role id " + roleid + " not found!"));
-
-        if (roleRepository.checkUserRolesCombo(userid,
-                roleid)
-                .getCount() > 0) {
-            roleRepository.deleteUserRoles(userid,
-                    roleid);
-        } else {
-            throw new EntityNotFoundException("Role and User Combination Does Not Exists");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void addUserRole(long userid,
-                            long roleid) {
-        userRepository.findById(userid)
-                .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
-        roleRepository.findById(roleid)
-                .orElseThrow(() -> new EntityNotFoundException("Role id " + roleid + " not found!"));
-
-        if (roleRepository.checkUserRolesCombo(userid,
-                roleid)
-                .getCount() <= 0) {
-            roleRepository.insertUserRoles(userAuditing.getCurrentAuditor().get(),
-                    userid,
-                    roleid);
-        } else {
-            throw new EntityNotFoundException("Role and User Combination Already Exists");
-        }
     }
 }
