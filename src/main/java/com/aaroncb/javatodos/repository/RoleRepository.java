@@ -24,16 +24,13 @@ public interface RoleRepository extends CrudRepository<Role, Long>
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE FROM userroles WHERE userid = :userid AND roleid = :roleid", nativeQuery = true)
-    void deleteUserRoles(long userid,
-                         long roleid);
+    @Query(value = "DELETE FROM userroles WHERE userid = :userid", nativeQuery = true)
+    void deleteUserRoles(long userid);
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO userroles(userid, roleid, created_by, created_date, last_modified_by, last_modified_date) VALUES (:userid, :roleid, :uname, CURRENT_TIMESTAMP, :uname, CURRENT_TIMESTAMP)",
-            nativeQuery = true)
-    void insertUserRoles(String uname,
-                         long userid,
+    @Query(value = "INSERT INTO UserRoles(userid, roleid) VALUES (:userid, :roleidMP)", nativeQuery = true)
+    void insertUserRoles(long userid,
                          long roleid);
 
     Role findByNameIgnoreCase(String name);
@@ -41,8 +38,7 @@ public interface RoleRepository extends CrudRepository<Role, Long>
     @Transactional
     @Modifying
     // user Role instead of roles in order to use Hibernate SQL
-    @Query(value = "UPDATE roles SET name = :name, last_modified_by = :uname, last_modified_date = CURRENT_TIMESTAMP WHERE roleid = :roleid", nativeQuery = true)
-    void updateRoleName(String uname,
-                        long roleid,
+    @Query(value = "UPDATE roles SET name = :name WHERE roleid = :roleid", nativeQuery = true)
+    void updateRoleName(long roleid,
                         String name);
 }

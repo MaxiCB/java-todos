@@ -117,6 +117,20 @@ public class UserSerivceImpl implements UserService
                     .toLowerCase());
         }
 
+        if (user.getUserroles().size() > 0)
+        {
+            // with so many relationships happening, I decided to go
+            // with old school queries
+            // delete the old ones
+            roleRepository.deleteUserRoles(currentUser.getUserid());
+
+            // add the new ones
+            for (UserRoles ur : user.getUserroles())
+            {
+                roleRepository.insertUserRoles(id, ur.getRole().getRoleid());
+            }
+        }
+
         return userRepository.save(currentUser);
     }
 
@@ -126,45 +140,5 @@ public class UserSerivceImpl implements UserService
         userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found!"));
         userRepository.deleteById(id);
-    }
-
-    @Transactional
-    @Override
-    public User deleteUserRole(long userid,
-                               long roleid) {
-        userRepository.findById(userid)
-                .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
-        roleRepository.findById(roleid)
-                .orElseThrow(() -> new EntityNotFoundException("Role id " + roleid + " not found!"));
-
-        if (roleRepository.checkUserRolesCombo(userid,
-                roleid)
-                .getCount() > 0) {
-            roleRepository.deleteUserRoles(userid,
-                    roleid);
-        } else {
-            throw new EntityNotFoundException("Role and User Combination Does Not Exists");
-        }
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public void addUserRole(long userid,
-                            long roleid) {
-        userRepository.findById(userid)
-                .orElseThrow(() -> new EntityNotFoundException("User id " + userid + " not found!"));
-        roleRepository.findById(roleid)
-                .orElseThrow(() -> new EntityNotFoundException("Role id " + roleid + " not found!"));
-
-        if (roleRepository.checkUserRolesCombo(userid,
-                roleid)
-                .getCount() <= 0) {
-            roleRepository.insertUserRoles("SYSTEM",
-                    userid,
-                    roleid);
-        } else {
-            throw new EntityNotFoundException("Role and User Combination Already Exists");
-        }
     }
 }

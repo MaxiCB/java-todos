@@ -10,6 +10,7 @@ package com.aaroncb.javatodos.controllers;
 
 import com.aaroncb.javatodos.models.Todo;
 import com.aaroncb.javatodos.models.User;
+import com.aaroncb.javatodos.repository.RoleRepository;
 import com.aaroncb.javatodos.repository.TodoRepository;
 import com.aaroncb.javatodos.services.TodoService;
 import com.aaroncb.javatodos.services.UserService;
@@ -37,6 +38,9 @@ public class UserController
 
     @Autowired
     TodoRepository todoRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @GetMapping(value = "/users", produces = {"application/json"})
     public ResponseEntity<?> listAllUsers() {
@@ -113,8 +117,7 @@ public class UserController
                     Long userid,
             @PathVariable
                     Long roleid) {
-        userService.deleteUserRole(userid,
-                roleid);
+        roleRepository.deleteUserRoles(userid);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -125,7 +128,7 @@ public class UserController
                     long userid,
             @PathVariable
                     long roleid) {
-        userService.addUserRole(userid,
+        roleRepository.insertUserRoles(userid,
                 roleid);
 
         return new ResponseEntity<>(HttpStatus.CREATED);

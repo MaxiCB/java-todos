@@ -77,9 +77,8 @@ public class RoleServiceImpl implements RoleService {
 
         Role newRole = findRoleById(id);
 
-        roleRepository.updateRoleName(userAuditing.getCurrentAuditor().get(),
-                id,
-                role.getName());
+        roleRepository.updateRoleName(id, role.getName());
+
         return findRoleById(id);
     }
 
